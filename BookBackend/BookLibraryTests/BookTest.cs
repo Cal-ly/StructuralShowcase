@@ -11,7 +11,7 @@ public class BookTest
         validBook = new Book
         {
             Id = 1,
-            Name = "Test Book",
+            Title = "Test Book",
             Author = "Test Author",
             Price = 9.99m,
             ISBN = "1234567890123"
@@ -34,7 +34,7 @@ public class BookTest
     [TestMethod]
     public void Validate_InvalidName_ReturnsFalse()
     {
-        validBook.Name = "";
+        validBook.Title = "";
         Assert.IsFalse(validBook.Validate());
     }
 
@@ -81,7 +81,7 @@ public class BookTest
     [TestMethod]
     public void ValidateName_InvalidName_ReturnsFalse()
     {
-        validBook.Name = "";
+        validBook.Title = "";
         Assert.IsFalse(validBook.ValidateName());
     }
 
@@ -137,7 +137,7 @@ public class BookTest
         var anotherBook = new Book
         {
             Id = 1,
-            Name = "Test Book",
+            Title = "Test Book",
             Author = "Test Author",
             Price = 9.99m,
             ISBN = "1234567890123"
@@ -151,7 +151,7 @@ public class BookTest
         var anotherBook = new Book
         {
             Id = 2,
-            Name = "Another Book",
+            Title = "Another Book",
             Author = "Another Author",
             Price = 19.99m,
             ISBN = "9876543210987"
@@ -165,7 +165,7 @@ public class BookTest
         var anotherBook = new Book
         {
             Id = 1,
-            Name = "Test Book",
+            Title = "Test Book",
             Author = "Test Author",
             Price = 9.99m,
             ISBN = "1234567890123"

@@ -1,4 +1,7 @@
 global using BookLibrary;
+global using BookAPI.Data;
+global using BookAPI.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +22,12 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddSingleton<BookRepository>();
+// Configure MySQL connection
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<BookDbContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+builder.Services.AddScoped<BookRepository>();
 
 var app = builder.Build();
 

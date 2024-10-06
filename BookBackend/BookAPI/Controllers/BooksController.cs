@@ -1,18 +1,13 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
-namespace RestExercise1.Controllers;
+namespace BookAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BooksController : ControllerBase
+public class BooksController(BookRepository bookRepository) : ControllerBase
 {
-    private readonly BookRepository _bookRepository;
-
-    public BooksController(BookRepository bookRepository)
-    {
-        _bookRepository = bookRepository ?? throw new ArgumentNullException(nameof(bookRepository));
-    }
+    private readonly BookRepository _bookRepository = bookRepository ?? throw new ArgumentNullException(nameof(bookRepository));
 
     [EndpointDescription("Get all books")]
     [EnableCors("AllowAll")]

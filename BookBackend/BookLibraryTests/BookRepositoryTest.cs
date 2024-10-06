@@ -18,7 +18,7 @@ public class BookRepositoryTest
         validBook = new Book
         {
             Id = 1,
-            Name = "Test Book",
+            Title = "Test Book",
             Author = "Test Author",
             Price = 9.99m,
             ISBN = "1234567890123"
@@ -54,7 +54,7 @@ public class BookRepositoryTest
         var newBook = new Book
         {
             Id = 2,
-            Name = "New Book",
+            Title = "New Book",
             Author = "New Author",
             Price = 19.99m,
             ISBN = "9876543210987"
@@ -70,7 +70,7 @@ public class BookRepositoryTest
         var invalidBook = new Book
         {
             Id = 0,
-            Name = "",
+            Title = "",
             Author = "",
             Price = 0,
             ISBN = ""
@@ -82,10 +82,10 @@ public class BookRepositoryTest
     [TestMethod]
     public void Update_ValidBook_ReturnsUpdatedBook()
     {
-        validBook.Name = "Updated Book";
+        validBook.Title = "Updated Book";
         var updatedBook = repository.Update(validBook);
         Assert.IsNotNull(updatedBook);
-        Assert.AreEqual("Updated Book", updatedBook.Name);
+        Assert.AreEqual("Updated Book", updatedBook.Title);
     }
 
     [TestMethod]
@@ -94,7 +94,7 @@ public class BookRepositoryTest
         var invalidBook = new Book
         {
             Id = 1,
-            Name = "",
+            Title = "",
             Author = "",
             Price = 0,
             ISBN = ""
@@ -109,7 +109,7 @@ public class BookRepositoryTest
         var nonExistingBook = new Book
         {
             Id = 999,
-            Name = "Non-Existing Book",
+            Title = "Non-Existing Book",
             Author = "Non-Existing Author",
             Price = 19.99m,
             ISBN = "9876543210987"

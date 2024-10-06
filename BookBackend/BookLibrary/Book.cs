@@ -11,9 +11,9 @@ public class Book
     public int Id { get; set; }
 
     /// <summary>
-    /// Gets or sets the name of the book.
+    /// Gets or sets the title of the book.
     /// </summary>
-    public string? Name { get; set; }
+    public string? Title { get; set; }
 
     /// <summary>
     /// Gets or sets the author of the book.
@@ -49,12 +49,12 @@ public class Book
     }
 
     /// <summary>
-    /// Validates the Name property.
+    /// Validates the Title property.
     /// </summary>
-    /// <returns>True if Name is not null or whitespace; otherwise, false.</returns>
+    /// <returns>True if title is not null or whitespace; otherwise, false.</returns>
     public bool ValidateName()
     {
-        return !string.IsNullOrWhiteSpace(Name);
+        return !string.IsNullOrWhiteSpace(Title);
     }
 
     /// <summary>
@@ -90,7 +90,7 @@ public class Book
     /// <returns>A string that represents the current book.</returns>
     public override string ToString()
     {
-        return $"Id: {Id}, Name: {Name}, Author: {Author}, Price: {Price:C2}, ISBN: {ISBN}";
+        return $"Id: {Id}, Name: {Title}, Author: {Author}, Price: {Price:C2}, ISBN: {ISBN}";
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ public class Book
         if (obj is Book book)
         {
             return Id == book.Id &&
-                   Name == book.Name &&
+                   Title == book.Title &&
                    Author == book.Author &&
                    Price == book.Price &&
                    ISBN == book.ISBN;
@@ -117,6 +117,6 @@ public class Book
     /// <returns>A hash code for the current book.</returns>
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name, Author, Price, ISBN);
+        return HashCode.Combine(Id, Title, Author, Price, ISBN);
     }
 }
