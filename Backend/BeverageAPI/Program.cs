@@ -3,7 +3,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<BeverageContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+//builder.Services.AddDbContext<BeverageContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+builder.Services.AddDbContext<BeverageContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(ServerVersion.AutoDetect(connectionString))));
 
 builder.Services.AddScoped<BeverageRepository>();
 
