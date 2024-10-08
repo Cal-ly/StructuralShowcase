@@ -19,7 +19,7 @@ public class BeverageRepository(BeverageContext context)
             throw new ArgumentNullException(nameof(beverage), "Beverage cannot be null.");
         }
 
-        beverage.Validate(); // Validate the beverage before adding
+        beverage.Validate();
         context.Beverages.Add(beverage);
         context.SaveChanges();
     }
