@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace BeverageAPI.Models;
+﻿namespace BeverageAPI.Models;
 
 public class BeverageContext(DbContextOptions<BeverageContext> options) : DbContext(options)
 {
@@ -8,6 +6,8 @@ public class BeverageContext(DbContextOptions<BeverageContext> options) : DbCont
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Beverage>(entity =>
         {
             entity.HasKey(b => b.Id);

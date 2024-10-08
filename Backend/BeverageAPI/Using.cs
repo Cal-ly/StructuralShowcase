@@ -1,0 +1,9 @@
+﻿global using BeverageAPI.Models;
+global using Pomelo.EntityFrameworkCore.MySql;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.VisualStudio.Web.CodeGeneration;
+global using Microsoft.VisualStudio.Web.CodeGenerators;

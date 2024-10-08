@@ -2,8 +2,16 @@
 
 public class BeverageRepository(BeverageContext context)
 {
+    public List<Beverage> GetAll()
+    {
+        return [.. context.Beverages];
+    }
 
-    // Add a new Beverage to the repository
+    public Beverage? GetById(int id)
+    {
+        return context.Beverages.FirstOrDefault(b => b.Id == id);
+    }
+
     public void Add(Beverage beverage)
     {
         if (beverage == null)
@@ -16,19 +24,6 @@ public class BeverageRepository(BeverageContext context)
         context.SaveChanges();
     }
 
-    // Get all Beverages from the repository
-    public List<Beverage> GetAll()
-    {
-        return context.Beverages.ToList();
-    }
-
-    // Get a specific Beverage by Id
-    public Beverage? GetById(int id)
-    {
-        return context.Beverages.FirstOrDefault(b => b.Id == id);
-    }
-
-    // Update an existing Beverage in the repository
     public void Update(Beverage beverage)
     {
         if (beverage == null)
@@ -42,9 +37,8 @@ public class BeverageRepository(BeverageContext context)
             throw new ArgumentException("Beverage with the given Id does not exist.");
         }
 
-        beverage.Validate(); // Validate the beverage before updating
+        beverage.Validate();
 
-        // Update properties
         existingBeverage.Brand = beverage.Brand;
         existingBeverage.Description = beverage.Description;
         existingBeverage.Price = beverage.Price;
@@ -54,7 +48,6 @@ public class BeverageRepository(BeverageContext context)
         context.SaveChanges();
     }
 
-    // Remove a Beverage from the repository by Id
     public void Remove(int id)
     {
         var beverageToRemove = GetById(id);
@@ -67,7 +60,6 @@ public class BeverageRepository(BeverageContext context)
         context.SaveChanges();
     }
 
-    // Check if a Beverage exists by Id
     public bool Exists(int id)
     {
         return context.Beverages.Any(b => b.Id == id);

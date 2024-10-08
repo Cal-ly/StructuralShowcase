@@ -1,6 +1,6 @@
 @BeverageAPI_HostAddress = http://localhost:5037
 
-GET {{BeverageAPI_HostAddress}}/weatherforecast/
+GET {{BeverageAPI_HostAddress}}/
 Accept: application/json
 
 ###
