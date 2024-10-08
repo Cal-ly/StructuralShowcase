@@ -1,6 +1,6 @@
 @BeverageAPI_HostAddress = http://localhost:5037
 
-GET {{BeverageAPI_HostAddress}}/
+GET {{BeverageAPI_HostAddress}}/Beverages
 Accept: application/json
 
 ###

@@ -1,4 +1,6 @@
 ﻿global using BeverageAPI.Models;
+global using BeverageAPI.Mappers;
+global using AutoMapper;
 global using Pomelo.EntityFrameworkCore.MySql;
 global using MySql.Data;
 global using Microsoft.AspNetCore.Mvc;

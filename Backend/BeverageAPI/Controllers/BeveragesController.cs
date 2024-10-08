@@ -1,95 +1,93 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using BeverageAPI.Models;
+﻿namespace BeverageAPI.Controllers;
 
-namespace BeverageAPI.Controllers
+[Route("[controller]")]
+[ApiController]
+public class BeveragesController(BeverageContext context, IMapper autoMapper) : ControllerBase
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class BeveragesController(BeverageContext context) : ControllerBase
+    // GET: /Beverages
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<BeverageDTO>>> GetBeverages()
     {
-        // GET: Beverages
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Beverage>>> GetBeverages()
+        var beverages = await context.Beverages.ToListAsync();
+        return Ok(autoMapper.Map<IEnumerable<BeverageDTO>>(beverages));
+    }
+
+    // GET: /Beverages/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<BeverageDTO>> GetBeverage(int id)
+    {
+        var beverage = await context.Beverages.FindAsync(id);
+
+        if (beverage == null)
         {
-            return await context.Beverages.ToListAsync();
+            return NotFound();
         }
 
-        // GET: Beverages/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Beverage>> GetBeverage(int id)
-        {
-            var beverage = await context.Beverages.FindAsync(id);
+        return Ok(autoMapper.Map<BeverageDTO>(beverage));
+    }
 
-            return beverage == null ? (ActionResult<Beverage>)NotFound() : (ActionResult<Beverage>)beverage;
+    // POST: /Beverages
+    [HttpPost]
+    public async Task<ActionResult<BeverageDTO>> PostBeverage(BeverageDTO beverageDto)
+    {
+        var beverage = autoMapper.Map<Beverage>(beverageDto);
+        context.Beverages.Add(beverage);
+        await context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetBeverage), new { id = beverage.Id }, autoMapper.Map<BeverageDTO>(beverage));
+    }
+
+    // PUT: /Beverages/5
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutBeverage(int id, BeverageDTO beverageDto)
+    {
+        var beverage = await context.Beverages.FindAsync(id);
+
+        if (beverage == null)
+        {
+            return NotFound();
         }
 
-        // PUT: Beverages/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBeverage(int id, Beverage beverage)
+        autoMapper.Map(beverageDto, beverage);
+        context.Entry(beverage).State = EntityState.Modified;
+
+        try
         {
-            if (id != beverage.Id)
-            {
-                return BadRequest();
-            }
-
-            context.Entry(beverage).State = EntityState.Modified;
-
-            try
-            {
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BeverageExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: Beverages
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Beverage>> PostBeverage(Beverage beverage)
-        {
-            context.Beverages.Add(beverage);
             await context.SaveChangesAsync();
-
-            return CreatedAtAction("GetBeverage", new { id = beverage.Id }, beverage);
         }
-
-        // DELETE: Beverages/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBeverage(int id)
+        catch (DbUpdateConcurrencyException)
         {
-            var beverage = await context.Beverages.FindAsync(id);
-            if (beverage == null)
+            if (!BeverageExists(id))
             {
                 return NotFound();
             }
-
-            context.Beverages.Remove(beverage);
-            await context.SaveChangesAsync();
-
-            return NoContent();
+            else
+            {
+                throw;
+            }
         }
 
-        private bool BeverageExists(int id)
+        return NoContent();
+    }
+
+    // DELETE: /Beverages/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteBeverage(int id)
+    {
+        var beverage = await context.Beverages.FindAsync(id);
+        if (beverage == null)
         {
-            return context.Beverages.Any(e => e.Id == id);
+            return NotFound();
         }
+
+        context.Beverages.Remove(beverage);
+        await context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    private bool BeverageExists(int id)
+    {
+        return context.Beverages.Any(e => e.Id == id);
     }
 }
