@@ -39,7 +39,7 @@ public class BeverageRepository(BeverageContext context)
 
         beverage.Validate();
 
-        existingBeverage.Brand = beverage.Brand;
+        existingBeverage.Name = beverage.Name;
         existingBeverage.Description = beverage.Description;
         existingBeverage.Price = beverage.Price;
         existingBeverage.Size = beverage.Size;

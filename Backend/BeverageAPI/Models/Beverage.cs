@@ -3,7 +3,7 @@
 public class Beverage
 {
     public int Id { get; set; }
-    public string? Brand { get; set; }
+    public string? Name { get; set; }
     public string? Description { get; set; }
     public decimal Price { get; set; }
     public SizeEnum Size { get; set; }
@@ -11,7 +11,7 @@ public class Beverage
     public void Validate()
     {
         ValidateId();
-        ValidateBrand();
+        ValidateName();
         ValidateDescription();
         ValidatePrice();
         ValidateSize();
@@ -25,16 +25,16 @@ public class Beverage
         }
     }
 
-    private void ValidateBrand()
+    private void ValidateName()
     {
-        if (Brand == null)
+        if (Name == null)
         {
-            throw new ArgumentNullException("Brand cannot be null.");
+            throw new ArgumentNullException("Name cannot be null.");
         }
 
-        if (Brand.Length < 2 || Brand.Length > 50)
+        if (Name.Length < 2 || Name.Length > 50)
         {
-            throw new ArgumentException("Brand must be between 2 and 50 characters.");
+            throw new ArgumentException("Name must be between 2 and 50 characters.");
         }
     }
 
@@ -42,7 +42,7 @@ public class Beverage
     {
         if (Description == null)
         {
-            throw new ArgumentNullException("Brand cannot be null.");
+            throw new ArgumentNullException("Name cannot be null.");
         }
 
         if (string.IsNullOrWhiteSpace(Description) || Description.Length < 5)
@@ -69,7 +69,7 @@ public class Beverage
 
     public override string ToString()
     {
-        return $"Id: {Id}, Brand: {Brand}, Description: {Description}, Price: {Price:C}, Size: {Size}";
+        return $"Id: {Id}, Name: {Name}, Description: {Description}, Price: {Price:C}, Size: {Size}";
     }
 
     public override bool Equals(object? obj)
@@ -77,7 +77,7 @@ public class Beverage
         if (obj is Beverage other)
         {
             return Id == other.Id &&
-                   Brand == other.Brand &&
+                   Name == other.Name &&
                    Description == other.Description &&
                    Price == other.Price &&
                    Size == other.Size;
@@ -87,6 +87,6 @@ public class Beverage
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Brand, Description, Price, Size);
+        return HashCode.Combine(Id, Name, Description, Price, Size);
     }
 }
