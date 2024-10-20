@@ -17,3 +17,5 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.VisualStudio.Web.CodeGeneration;
 global using Microsoft.VisualStudio.Web.CodeGenerators;
+global using Microsoft.EntityFrameworkCore.Migrations;
+global using BCrypt.Net;
