@@ -10,12 +10,11 @@ public class OrdersController : ControllerBase
         _context = context;
     }
 
-    [HttpPost]
-    public IActionResult PlaceOrder(Order order)
+    [HttpGet]
+    public IActionResult GetOrders()
     {
-        _context.Orders.Add(order);
-        _context.SaveChanges();
-        return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, order);
+        var orders = _context.Orders.Include(o => o.OrderItems).ToList();
+        return Ok(orders);
     }
 
     [HttpGet("{id}")]
@@ -24,6 +23,14 @@ public class OrdersController : ControllerBase
         var order = _context.Orders.Include(o => o.OrderItems).FirstOrDefault(o => o.Id == id);
         if (order == null) return NotFound();
         return Ok(order);
+    }
+
+    [HttpPost]
+    public IActionResult PlaceOrder(Order order)
+    {
+        _context.Orders.Add(order);
+        _context.SaveChanges();
+        return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, order);
     }
 
     [HttpPut("{id}/status")]

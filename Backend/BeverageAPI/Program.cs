@@ -33,7 +33,6 @@ builder.Services.AddCors(options =>
 //{
 //    var jwtKey = builder.Configuration["Jwt:Key"];
 //    var jwtSettings = builder.Configuration.GetSection("Jwt");
-//    builder.Services.Configure<JwtSecurityToken>(jwtSettings);
 //    if (string.IsNullOrEmpty(jwtKey))
 //    {
 //        throw new InvalidOperationException("JWT Key is not configured.");
