@@ -88,6 +88,5 @@ public class BeverageContext(DbContextOptions<BeverageContext> options) : DbCont
                 .HasForeignKey(oi => oi.BeverageId)
                 .OnDelete(DeleteBehavior.Restrict);  // Prevent deletion of beverages in use by orders
         });
-
     }
 }
