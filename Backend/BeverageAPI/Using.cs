@@ -2,6 +2,7 @@
 global using BeverageAPI.Data;
 global using BeverageAPI.Profiles;
 global using BeverageAPI.DTO;
+global using BeverageAPI.Services;
 global using AutoMapper;
 global using Pomelo.EntityFrameworkCore.MySql;
 global using MySql.Data;
@@ -19,3 +20,7 @@ global using Microsoft.VisualStudio.Web.CodeGeneration;
 global using Microsoft.VisualStudio.Web.CodeGenerators;
 global using Microsoft.EntityFrameworkCore.Migrations;
 global using BCrypt.Net;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using System.Text;
+global using Microsoft.IdentityModel.Tokens;

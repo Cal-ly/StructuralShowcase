@@ -1,23 +1,17 @@
 import axios from 'axios';
 
-const API_URL = 'https://<your-backend-api-url>'; // Replace with your API URL
-
+// Set the base URL for the API
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: 'https://your-azure-app-url/api',
 });
 
-// Add token to Authorization header if it exists
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+// Interceptor to add the Authorization header with the JWT token
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-);
+  return config;
+});
 
 export default api;

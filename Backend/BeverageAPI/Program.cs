@@ -14,6 +14,10 @@ builder.Services.AddDbContext<BeverageContext>(options =>
 
 builder.Services.AddAutoMapper(typeof(BeverageProfile), typeof(UserProfile), typeof(CustomerProfile), typeof(OrderProfile));
 
+builder.Services.AddScoped<AdminService>();
+builder.Services.AddScoped<AnalyticsService>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

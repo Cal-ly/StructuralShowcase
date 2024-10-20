@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace BeverageAPI.Services;
+﻿namespace BeverageAPI.Services;
 
 public class AnalyticsService
 {
