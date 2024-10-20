@@ -1,4 +1,4 @@
-﻿namespace BeverageAPI.Mappers;
+﻿namespace BeverageAPI.DTO;
 
 public class BeverageDTO
 {

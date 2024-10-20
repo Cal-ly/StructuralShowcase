@@ -2,58 +2,67 @@
 
 [Route("[controller]")]
 [ApiController]
-public class BeveragesController(BeverageContext context, IMapper autoMapper) : ControllerBase
+public class BeveragesController : ControllerBase
 {
+    private readonly BeverageContext _context;
+    private readonly IMapper _autoMapper;
+
+    public BeveragesController(BeverageContext context, IMapper autoMapper)
+    {
+        _context = context;
+        _autoMapper = autoMapper;
+    }
+
     // GET: /Beverages
     [HttpGet]
     public async Task<ActionResult<IEnumerable<BeverageDTO>>> GetBeverages()
     {
-        var beverages = await context.Beverages.ToListAsync();
-        return Ok(autoMapper.Map<IEnumerable<BeverageDTO>>(beverages));
+        var beverages = await _context.Beverages.ToListAsync();
+        return Ok(_autoMapper.Map<IEnumerable<BeverageDTO>>(beverages));
     }
 
     // GET: /Beverages/5
     [HttpGet("{id}")]
     public async Task<ActionResult<BeverageDTO>> GetBeverage(int id)
     {
-        var beverage = await context.Beverages.FindAsync(id);
+        var beverage = await _context.Beverages.FindAsync(id);
 
         if (beverage == null)
         {
             return NotFound();
         }
 
-        return Ok(autoMapper.Map<BeverageDTO>(beverage));
+        return Ok(_autoMapper.Map<BeverageDTO>(beverage));
     }
 
     // POST: /Beverages
     [HttpPost]
     public async Task<ActionResult<BeverageDTO>> PostBeverage(BeverageDTO beverageDto)
     {
-        var beverage = autoMapper.Map<Beverage>(beverageDto);
-        context.Beverages.Add(beverage);
-        await context.SaveChangesAsync();
+        var beverage = _autoMapper.Map<Beverage>(beverageDto);
+        _context.Beverages.Add(beverage);
+        await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetBeverage), new { id = beverage.Id }, autoMapper.Map<BeverageDTO>(beverage));
+        return CreatedAtAction(nameof(GetBeverage), new { id = beverage.Id }, _autoMapper.Map<BeverageDTO>(beverage));
     }
 
     // PUT: /Beverages/5
     [HttpPut("{id}")]
     public async Task<IActionResult> PutBeverage(int id, BeverageDTO beverageDto)
     {
-        var beverage = await context.Beverages.FindAsync(id);
+        var beverage = await _context.Beverages.FindAsync(id);
 
         if (beverage == null)
         {
             return NotFound();
         }
 
-        autoMapper.Map(beverageDto, beverage);
-        context.Entry(beverage).State = EntityState.Modified;
+        _autoMapper.Map(beverageDto, beverage);
+        _context.Entry(beverage).State = EntityState.Modified;
 
         try
         {
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -74,20 +83,20 @@ public class BeveragesController(BeverageContext context, IMapper autoMapper) : 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBeverage(int id)
     {
-        var beverage = await context.Beverages.FindAsync(id);
+        var beverage = await _context.Beverages.FindAsync(id);
         if (beverage == null)
         {
             return NotFound();
         }
 
-        context.Beverages.Remove(beverage);
-        await context.SaveChangesAsync();
+        _context.Beverages.Remove(beverage);
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool BeverageExists(int id)
     {
-        return context.Beverages.Any(e => e.Id == id);
+        return _context.Beverages.Any(e => e.Id == id);
     }
 }

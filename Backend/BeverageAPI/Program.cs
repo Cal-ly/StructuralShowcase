@@ -9,8 +9,6 @@ builder.Services.AddDbContext<BeverageContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
         new MySqlServerVersion(ServerVersion.AutoDetect(connectionString))));
 
-builder.Services.AddScoped<BeverageRepository>();
-
 builder.Services.AddAutoMapper(typeof(BeverageProfile));
 
 builder.Services.AddEndpointsApiExplorer();

@@ -1,4 +1,4 @@
-﻿namespace BeverageAPI.Mappers;
+﻿namespace BeverageAPI.Profiles;
 
 public class BeverageProfile : Profile
 {
