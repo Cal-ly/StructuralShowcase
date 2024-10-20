@@ -1,4 +1,4 @@
-﻿namespace BeverageAPI.Models;
+﻿namespace BeverageAPI.Data;
 
 public enum SizeEnum
 {

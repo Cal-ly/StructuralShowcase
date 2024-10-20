@@ -27,12 +27,12 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPut("{id}/status")]
-    public IActionResult UpdateOrderStatus(int id, string status)
+    public IActionResult UpdateOrderStatus(int id, int statusInt)
     {
         var order = _context.Orders.Find(id);
         if (order == null) return NotFound();
 
-        order.Status = status;
+        order.Status = (StatusEnum)statusInt;
         _context.SaveChanges();
         return NoContent();
     }

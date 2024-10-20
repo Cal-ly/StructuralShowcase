@@ -10,10 +10,27 @@ public class OrderItem
     public int BeverageId { get; set; }
     public Beverage Beverage { get; set; } = null!;
 
+    public void CalculatePrice()
+    {
+        if (Beverage is null)
+        {
+            throw new Exception("Beverage information is missing.");
+        }
+
+        Price = Quantity * Beverage.Price;
+    }
+
     public void Validate()
     {
-        if (Quantity <= 0) throw new Exception("Quantity must be greater than zero.");
-        if (Price < 0) throw new Exception("Price must be zero or greater.");
+        if (Quantity <= 0)
+        {
+            throw new Exception("Quantity must be greater than zero.");
+        }
+
+        if (Price < 0)
+        {
+            throw new Exception("Price must be zero or greater.");
+        }
     }
 
     public override string ToString()

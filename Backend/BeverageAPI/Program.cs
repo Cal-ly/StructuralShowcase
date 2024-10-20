@@ -32,7 +32,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add JWT authentication services
+
+builder.Services.AddScoped<DataSeeder>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     var jwtKey = builder.Configuration["Jwt:Key"];
@@ -55,6 +56,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+    seeder.SeedData();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -62,10 +69,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

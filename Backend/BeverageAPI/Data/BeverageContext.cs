@@ -47,12 +47,18 @@ public class BeverageContext(DbContextOptions<BeverageContext> options) : DbCont
         });
 
         // Order Configuration
-        modelBuilder.Entity<Order>(entity =>
+        modelBuilder.Entity<Order>(static entity =>
         {
             entity.HasKey(o => o.Id);
             entity.Property(o => o.Id).ValueGeneratedOnAdd();
             entity.Property(o => o.OrderDate).IsRequired();
-            entity.Property(o => o.Status).IsRequired().HasMaxLength(50);
+            entity.Property(o => o.Status)
+                .HasDefaultValue(StatusEnum.Pending)
+                .HasConversion<int>()
+                .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
+            entity.Property(o => o.Status)
+                .Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
+
             entity.Property(o => o.TotalAmount).HasColumnType("decimal(18,2)");
 
             // Order to Customer (Many-to-One)
