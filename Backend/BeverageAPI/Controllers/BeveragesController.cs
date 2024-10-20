@@ -1,6 +1,6 @@
 ﻿namespace BeverageAPI.Controllers;
 
-[Route("[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class BeveragesController : ControllerBase
 {
