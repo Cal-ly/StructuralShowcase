@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace BeverageAPI.Controllers;
+﻿namespace BeverageAPI.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class OrdersController : ControllerBase
