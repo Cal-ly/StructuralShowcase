@@ -44,26 +44,26 @@ public class DataSeeder
             // Seed Users (linked to customers)
             var users = new List<User>
             {
-                new User { Email = "sorensorensen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[0].Id },
-                new User { Email = "jornjorgensen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[1].Id },
-                new User { Email = "hanshansen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[2].Id },
-                new User { Email = "larslarsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[3].Id },
-                new User { Email = "peterpetersen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[4].Id },
-                new User { Email = "oleolsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[5].Id },
-                new User { Email = "karlkarlsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[6].Id },
-                new User { Email = "mortenmortensen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[7].Id },
-                new User { Email = "frederikfrederiksen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[8].Id },
-                new User { Email = "nielsnielsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[9].Id },
-                new User { Email = "andersandersen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[10].Id },
-                new User { Email = "poulpoulsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[11].Id },
-                new User { Email = "jensjensen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[12].Id },
-                new User { Email = "erikeriksen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[13].Id },
-                new User { Email = "madsmadsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[14].Id },
-                new User { Email = "kristiankristiansen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[15].Id },
-                new User { Email = "michaelmichaelsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[16].Id },
-                new User { Email = "henrikhenriksen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[17].Id },
-                new User { Email = "thomasthomassen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[18].Id },
-                new User { Email = "martinmartinsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[19].Id }
+                new User { Email = "sorensorensen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[0].Id, Customer = customers[0] },
+                new User { Email = "jornjorgensen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[1].Id, Customer = customers[1] },
+                new User { Email = "hanshansen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[2].Id, Customer = customers[2] },
+                new User { Email = "larslarsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[3].Id, Customer = customers[3] },
+                new User { Email = "peterpetersen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[4].Id, Customer = customers[4] },
+                new User { Email = "oleolsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[5].Id, Customer = customers[5] },
+                new User { Email = "karlkarlsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[6].Id, Customer = customers[6] },
+                new User { Email = "mortenmortensen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[7].Id, Customer = customers[7] },
+                new User { Email = "frederikfrederiksen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[8].Id, Customer = customers[8] },
+                new User { Email = "nielsnielsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[9].Id, Customer = customers[9] },
+                new User { Email = "andersandersen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[10].Id, Customer = customers[10] },
+                new User { Email = "poulpoulsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[11].Id, Customer = customers[11] },
+                new User { Email = "jensjensen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[12].Id, Customer = customers[12] },
+                new User { Email = "erikeriksen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[13].Id, Customer = customers[13] },
+                new User { Email = "madsmadsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[14].Id, Customer = customers[14] },
+                new User { Email = "kristiankristiansen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[15].Id, Customer = customers[15] },
+                new User { Email = "michaelmichaelsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[16].Id, Customer = customers[16] },
+                new User { Email = "henrikhenriksen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[17].Id, Customer = customers[17] },
+                new User { Email = "thomasthomassen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[18].Id, Customer = customers[18] },
+                new User { Email = "martinmartinsen@test.dk", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), CustomerId = customers[19].Id, Customer = customers[19] }
             };
             _context.Users.AddRange(users);
             _context.SaveChanges();
@@ -126,10 +126,10 @@ public class DataSeeder
                     orderDate = DateTime.Now.AddDays(-random.Next(1, 30)); // Closer to now
                 }
 
-                // Update the order creation to use the StatusEnum directly
                 var order = new Order
                 {
                     CustomerId = customer.Id,
+                    Customer = customer,
                     OrderDate = orderDate,
                     Status = status, // Use the StatusEnum directly
                     TotalAmount = 0m // To be calculated based on order items
@@ -138,8 +138,8 @@ public class DataSeeder
                 _context.Orders.Add(order);
                 _context.SaveChanges(); // Save to generate the OrderId
 
-                // Generate between 1 and 5 order items per order
-                int numOrderItems = random.Next(1, 6);
+                // Generate between 1 and 10 order items per order
+                int numOrderItems = random.Next(1, 11);
                 decimal totalAmount = 0;
 
                 for (int j = 0; j < numOrderItems; j++)
@@ -163,13 +163,14 @@ public class DataSeeder
 
                     orderItems.Add(orderItem);
 
-                    // Accumulate total amount for the order
                     totalAmount += orderItemPrice;
                 }
 
                 // Update the order total amount and save it
                 order.TotalAmount = totalAmount;
                 _context.Orders.Update(order);
+                customer.Orders.Add(order);
+                _context.Customers.Update(customer);
             }
 
             _context.OrderItems.AddRange(orderItems);

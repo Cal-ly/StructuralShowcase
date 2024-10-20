@@ -54,10 +54,7 @@ public class BeverageContext(DbContextOptions<BeverageContext> options) : DbCont
             entity.Property(o => o.OrderDate).IsRequired();
             entity.Property(o => o.Status)
                 .HasDefaultValue(StatusEnum.Pending)
-                .HasConversion<int>()
-                .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
-            entity.Property(o => o.Status)
-                .Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
+                .HasConversion<int>();
 
             entity.Property(o => o.TotalAmount).HasColumnType("decimal(18,2)");
 
