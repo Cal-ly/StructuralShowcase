@@ -7,7 +7,7 @@ public class User
     public required string PasswordHash { get; set; }
     public int CustomerId { get; set; }
     public Customer Customer { get; set; } = null!;
-    public UserRole Role { get; set; } = UserRole.Customer;
+    public UserRole? Role { get; set; } = UserRole.Customer;
 
     public void Validate()
     {

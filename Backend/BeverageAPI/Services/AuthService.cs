@@ -59,7 +59,7 @@ public class AuthService
             [
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Role.ToString())  // Add role to token claims
+                new Claim(ClaimTypes.Role, user.Role?.ToString() ?? nameof(UserRole.Customer))  // Add role to token claims
             ]),
             Expires = DateTime.UtcNow.AddMinutes(double.Parse(_configuration["Jwt:ExpiryMinutes"] ?? "720")),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),

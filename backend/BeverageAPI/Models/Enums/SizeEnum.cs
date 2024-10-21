@@ -2,6 +2,7 @@
 
 public enum SizeEnum
 {
+    None = 0,
     SmallBottle = 1,    // 25 cl
     MediumBottle = 2,   // 50 cl
     LargeBottle = 3,    // 150 cL
