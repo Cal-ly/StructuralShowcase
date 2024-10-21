@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BeverageAPI.Models.Enums;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BeverageAPI.Controllers
 {

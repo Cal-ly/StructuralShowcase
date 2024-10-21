@@ -1,4 +1,6 @@
-﻿namespace BeverageAPI.Data;
+﻿using BeverageAPI.Models.Enums;
+
+namespace BeverageAPI.Data;
 
 public class DataSeeder
 {

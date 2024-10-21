@@ -1,4 +1,4 @@
-﻿namespace BeverageAPI.Data;
+﻿namespace BeverageAPI.Models.Enums;
 
 public enum StatusEnum
 {

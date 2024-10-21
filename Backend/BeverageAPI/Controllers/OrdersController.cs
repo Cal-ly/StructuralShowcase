@@ -1,4 +1,6 @@
-﻿namespace BeverageAPI.Controllers;
+﻿using BeverageAPI.Models.Enums;
+
+namespace BeverageAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

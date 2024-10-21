@@ -1,4 +1,4 @@
-using Microsoft.OpenApi.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +80,12 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
+
+var configSources = builder.Configuration.AsEnumerable();
+foreach (var configSource in configSources)
+{
+    Console.WriteLine($"Key: {configSource.Key}, Value: {configSource.Value}");
+}
 
 var app = builder.Build();
 

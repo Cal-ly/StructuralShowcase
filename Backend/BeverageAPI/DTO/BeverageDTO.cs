@@ -1,4 +1,6 @@
-﻿namespace BeverageAPI.DTO;
+﻿using BeverageAPI.Models.Enums;
+
+namespace BeverageAPI.DTO;
 
 public class BeverageDTO
 {

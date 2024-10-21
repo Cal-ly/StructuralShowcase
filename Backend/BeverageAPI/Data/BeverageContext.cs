@@ -1,4 +1,6 @@
-﻿namespace BeverageAPI.Data;
+﻿using BeverageAPI.Models.Enums;
+
+namespace BeverageAPI.Data;
 
 public class BeverageContext(DbContextOptions<BeverageContext> options) : DbContext(options)
 {

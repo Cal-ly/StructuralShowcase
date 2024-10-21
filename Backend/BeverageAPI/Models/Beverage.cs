@@ -1,4 +1,6 @@
-﻿namespace BeverageAPI.Models;
+﻿using BeverageAPI.Models.Enums;
+
+namespace BeverageAPI.Models;
 
 public class Beverage
 {
