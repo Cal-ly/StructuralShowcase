@@ -1,20 +1,39 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+// Retrieve the JWT settings from configuration (secrets.json or appsettings)
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = Encoding.ASCII.GetBytes(jwtSettings?["Key"] ?? throw new InvalidOperationException("JWT Key is not configured."));
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// Configure JWT authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],    // Validate the issuer
+        ValidAudience = jwtSettings["Audience"], // Validate the audience
+        IssuerSigningKey = new SymmetricSecurityKey(key), // Sign key
+        ClockSkew = TimeSpan.Zero  // Expire exactly after the set time
+    };
+});
 
+
+var connectionString = builder.Configuration.GetConnectionString("BeverageDatabase");
 builder.Services.AddDbContext<BeverageContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(ServerVersion.AutoDetect(connectionString))));
+    options.UseMySql(connectionString, new MySqlServerVersion(ServerVersion.AutoDetect(connectionString))));
 
-builder.Services.AddAutoMapper(typeof(BeverageProfile), typeof(UserProfile), typeof(CustomerProfile), typeof(OrderProfile));
+builder.Services.AddAutoMapper(typeof(BeverageProfile), typeof(UserProfile), typeof(CustomerProfile), typeof(OrderProfile), typeof(OrderItemProfile));
 
 builder.Services.AddScoped<AdminService>();
 builder.Services.AddScoped<AnalyticsService>();
-//builder.Services.AddScoped<AuthService>();
-//builder.Services.AddScoped<TokenService>();
-builder.Services.AddScoped<DataSeeder>();
+builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -29,35 +48,9 @@ builder.Services.AddCors(options =>
     });
 });
 
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-//{
-//    var jwtKey = builder.Configuration["Jwt:Key"];
-//    var jwtSettings = builder.Configuration.GetSection("Jwt");
-//    if (string.IsNullOrEmpty(jwtKey))
-//    {
-//        throw new InvalidOperationException("JWT Key is not configured.");
-//    }
-
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = true,
-//        ValidateIssuerSigningKey = true,
-//        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-//        ValidAudience = builder.Configuration["Jwt:Audience"],
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-//        ClockSkew = TimeSpan.Zero // Reduce the default clock skew
-//    };
-//});
+builder.Services.AddControllers();
 
 var app = builder.Build();
-
-//using (var scope = app.Services.CreateScope())
-//{
-//    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-//    seeder.SeedData();
-//}
 
 if (app.Environment.IsDevelopment())
 {
@@ -66,9 +59,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
-// app.UseHttpsRedirection(); // Ensure HTTPS is used
-// app.UseAuthentication();
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

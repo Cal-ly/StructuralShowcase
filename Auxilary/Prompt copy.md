@@ -83,6 +83,7 @@ public class BeverageProfile : Profile
 
 - Implement **error handling** and **input validation** (e.g., invalid email, order quantity).
 - Deploy the API on **Azure App Service** and link it to the MySQL database hosted on Simply.com.
+- Use the Visual Studio 2022 "Manage User Secrets" to store secrets, so they won't be pushed to GitHub.
 
 #### **Recommended Folder Structure (Back-End API)**:
 

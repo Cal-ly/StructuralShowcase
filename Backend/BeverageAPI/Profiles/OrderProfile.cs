@@ -12,3 +12,12 @@ public class OrderProfile : Profile
         CreateMap<OrderDTO, Order>();
     }
 }
+
+public class OrderItemProfile : Profile
+{
+    public OrderItemProfile()
+    {
+        CreateMap<OrderItem, OrderItemDTO>();
+        CreateMap<OrderItemDTO, OrderItem>();
+    }
+}

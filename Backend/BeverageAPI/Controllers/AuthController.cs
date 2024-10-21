@@ -1,6 +1,10 @@
-﻿namespace BeverageAPI.Controllers;
-[Route("api/[controller]")]
+﻿using Microsoft.AspNetCore.Mvc;
+using BeverageAPI.Services;
+using BeverageAPI.DTO;
+using Microsoft.EntityFrameworkCore;
+
 [ApiController]
+[Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;
@@ -11,12 +15,12 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginDTO dto)
+    public IActionResult Login([FromBody] LoginDTO LoginDTO)
     {
         try
         {
-            var token = _authService.Login(dto.Email, dto.Password);
-            return Ok(new { Token = token });
+            var token = _authService.Authenticate(LoginDTO.Email, LoginDTO.Password);
+            return Ok(new { token });
         }
         catch (UnauthorizedAccessException)
         {
@@ -24,17 +28,21 @@ public class AuthController : ControllerBase
         }
     }
 
+    // Example of a registration endpoint
     [HttpPost("register")]
-    public IActionResult Register(RegisterDTO dto)
+    public IActionResult Register([FromBody] RegisterDTO RegisterDTO)
     {
-        try
+        var hashedPassword = _authService.HashPassword(RegisterDTO.Password);
+        var newUser = new User
         {
-            _authService.Register(dto.Email, dto.Password, dto.CustomerId);
-            return Ok("User registered successfully.");
-        }
-        catch (InvalidOperationException ex)
-        {
-            return Conflict(ex.Message);  // Email already registered
-        }
+            Email = RegisterDTO.Email,
+            PasswordHash = hashedPassword,
+            // CustomerId will need to be set based on your registration flow
+        };
+
+        // Save new user to the database
+        _authService.RegisterUser(newUser);
+
+        return Ok("User registered successfully.");
     }
 }

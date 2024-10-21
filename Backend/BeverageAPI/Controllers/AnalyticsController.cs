@@ -1,7 +1,8 @@
 ﻿namespace BeverageAPI.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
+[Authorize(Roles = "Admin")]  // Restrict access to admin users
 public class AnalyticsController : ControllerBase
 {
     private readonly AnalyticsService _analyticsService;
@@ -11,6 +12,7 @@ public class AnalyticsController : ControllerBase
         _analyticsService = analyticsService;
     }
 
+    // Get top beverages by sales quantity
     [HttpGet("top-beverages")]
     public IActionResult GetTopBeverages(int topN = 5)
     {
@@ -18,6 +20,7 @@ public class AnalyticsController : ControllerBase
         return Ok(beverages);
     }
 
+    // Get total sales (sum of all orders)
     [HttpGet("total-sales")]
     public IActionResult GetTotalSales()
     {
@@ -25,6 +28,7 @@ public class AnalyticsController : ControllerBase
         return Ok(totalSales);
     }
 
+    // Get top customers by total spending
     [HttpGet("top-customers")]
     public IActionResult GetTopCustomers(int topN = 5)
     {
@@ -32,6 +36,7 @@ public class AnalyticsController : ControllerBase
         return Ok(customers);
     }
 
+    // Get monthly revenue trends
     [HttpGet("monthly-revenue")]
     public IActionResult GetMonthlyRevenue(int year)
     {
@@ -39,6 +44,7 @@ public class AnalyticsController : ControllerBase
         return Ok(revenue);
     }
 
+    // Get sales by product size
     [HttpGet("sales-by-size")]
     public IActionResult GetSalesBySize()
     {

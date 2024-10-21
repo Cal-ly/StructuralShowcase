@@ -2,53 +2,60 @@
 
 public class AuthService
 {
+    private readonly IConfiguration _configuration;
     private readonly BeverageContext _context;
-    private readonly TokenService _tokenService;
 
-    public AuthService(BeverageContext context, TokenService tokenService)
+    public AuthService(IConfiguration configuration, BeverageContext context)
     {
+        _configuration = configuration;
         _context = context;
-        _tokenService = tokenService;
     }
 
-    public string Login(string email, string password)
+    public void RegisterUser(User newUser)
     {
-        // Find the user by email
-        var user = _context.Users.FirstOrDefault(u => u.Email == email);
-        if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
-        {
-            throw new UnauthorizedAccessException("Invalid email or password.");
-        }
-
-        // Generate JWT token
-        return _tokenService.GenerateToken(user);
-    }
-
-    public void Register(string email, string password, int customerId)
-    {
-        // Check if user already exists
-        if (_context.Users.Any(u => u.Email == email))
-        {
-            throw new InvalidOperationException("Email is already registered.");
-        }
-
-        // Create a new user with hashed password
-        var user = new User
-        {
-            Email = email,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
-            CustomerId = customerId
-        };
-
-        // Add and save the user
-        _context.Users.Add(user);
+        // Add the new user to the context and save
+        _context.Users.Add(newUser);
         _context.SaveChanges();
     }
 
-    public User GetUserById(int userId)
+    public string Authenticate(string email, string password)
     {
-        var user = _context.Users.Find(userId);
-        if (user == null) throw new KeyNotFoundException("User not found.");
-        return user;
+        var user = _context.Users.FirstOrDefault(u => u.Email == email);
+        if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+        {
+            throw new UnauthorizedAccessException("Invalid credentials.");
+        }
+
+        return GenerateJwtToken(user);
+    }
+
+    public string HashPassword(string password)
+    {
+        return BCrypt.Net.BCrypt.HashPassword(password);
+    }
+
+    private string GenerateJwtToken(User user)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var secret = _configuration["Jwt:Secret"];
+        if (string.IsNullOrEmpty(secret))
+        {
+            throw new InvalidOperationException("JWT Secret is not configured.");
+        }
+        var key = Encoding.ASCII.GetBytes(secret);
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            }),
+            Expires = DateTime.UtcNow.AddHours(12),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
     }
 }
+

@@ -1,7 +1,8 @@
 ﻿namespace BeverageAPI.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
+[Authorize]  // Secure all endpoints with JWT
 public class BeveragesController : ControllerBase
 {
     private readonly BeverageContext _context;
@@ -13,7 +14,7 @@ public class BeveragesController : ControllerBase
         _autoMapper = autoMapper;
     }
 
-    // GET: /Beverages
+    // GET: /Beverages (Allow all authenticated users to view available beverages)
     [HttpGet]
     public async Task<ActionResult<IEnumerable<BeverageDTO>>> GetBeverages()
     {
@@ -21,12 +22,11 @@ public class BeveragesController : ControllerBase
         return Ok(_autoMapper.Map<IEnumerable<BeverageDTO>>(beverages));
     }
 
-    // GET: /Beverages/5
+    // GET: /Beverages/5 (Allow all authenticated users to view specific beverage details)
     [HttpGet("{id}")]
     public async Task<ActionResult<BeverageDTO>> GetBeverage(int id)
     {
         var beverage = await _context.Beverages.FindAsync(id);
-
         if (beverage == null)
         {
             return NotFound();
@@ -35,8 +35,9 @@ public class BeveragesController : ControllerBase
         return Ok(_autoMapper.Map<BeverageDTO>(beverage));
     }
 
-    // POST: /Beverages
+    // POST: /Beverages (Restrict to admin users only)
     [HttpPost]
+    [Authorize(Roles = "Admin")]  // Only admins can add new beverages
     public async Task<ActionResult<BeverageDTO>> PostBeverage(BeverageDTO beverageDto)
     {
         var beverage = _autoMapper.Map<Beverage>(beverageDto);
@@ -46,12 +47,12 @@ public class BeveragesController : ControllerBase
         return CreatedAtAction(nameof(GetBeverage), new { id = beverage.Id }, _autoMapper.Map<BeverageDTO>(beverage));
     }
 
-    // PUT: /Beverages/5
+    // PUT: /Beverages/5 (Restrict to admin users only)
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]  // Only admins can update beverage details
     public async Task<IActionResult> PutBeverage(int id, BeverageDTO beverageDto)
     {
         var beverage = await _context.Beverages.FindAsync(id);
-
         if (beverage == null)
         {
             return NotFound();
@@ -79,8 +80,9 @@ public class BeveragesController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: /Beverages/5
+    // DELETE: /Beverages/5 (Restrict to admin users only)
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]  // Only admins can delete beverages
     public async Task<IActionResult> DeleteBeverage(int id)
     {
         var beverage = await _context.Beverages.FindAsync(id);
