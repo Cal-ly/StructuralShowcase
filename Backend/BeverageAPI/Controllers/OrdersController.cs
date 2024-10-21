@@ -1,6 +1,4 @@
-﻿using BeverageAPI.Models.Enums;
-
-namespace BeverageAPI.Controllers;
+﻿namespace BeverageAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

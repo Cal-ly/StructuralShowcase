@@ -1,6 +1,5 @@
 ﻿namespace BeverageAPI.Profiles;
 
-
 public class UserProfile : Profile
 {
     public UserProfile()

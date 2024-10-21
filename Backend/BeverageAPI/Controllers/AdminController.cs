@@ -1,4 +1,5 @@
 ﻿namespace BeverageAPI.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class AdminController : ControllerBase

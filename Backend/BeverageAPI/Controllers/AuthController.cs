@@ -1,4 +1,6 @@
-﻿[ApiController]
+﻿namespace BeverageAPI.Controllers;
+
+[ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {

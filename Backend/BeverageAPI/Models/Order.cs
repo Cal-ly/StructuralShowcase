@@ -1,6 +1,4 @@
-﻿using BeverageAPI.Models.Enums;
-
-namespace BeverageAPI.Models;
+﻿namespace BeverageAPI.Models;
 
 public class Order
 {
