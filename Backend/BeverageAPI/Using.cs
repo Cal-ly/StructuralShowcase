@@ -3,6 +3,7 @@ global using BeverageAPI.Data;
 global using BeverageAPI.Profiles;
 global using BeverageAPI.DTO;
 global using BeverageAPI.Services;
+global using BeverageAPI.Models.Enums;
 global using AutoMapper;
 global using Pomelo.EntityFrameworkCore.MySql;
 global using MySql.Data;

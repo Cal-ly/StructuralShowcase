@@ -40,8 +40,8 @@ public class BeverageContext(DbContextOptions<BeverageContext> options) : DbCont
             entity.Property(u => u.Id).ValueGeneratedOnAdd();
             entity.Property(u => u.Email).IsRequired().HasMaxLength(100);
             entity.Property(u => u.PasswordHash).IsRequired();
+            entity.Property(u => u.Role).HasDefaultValue(UserRole.Customer).HasConversion<int>();
 
-            // User to Customer (One-to-One)
             entity.HasOne(u => u.Customer)
                 .WithOne(c => c.User)
                 .HasForeignKey<User>(u => u.CustomerId)
@@ -54,13 +54,9 @@ public class BeverageContext(DbContextOptions<BeverageContext> options) : DbCont
             entity.HasKey(o => o.Id);
             entity.Property(o => o.Id).ValueGeneratedOnAdd();
             entity.Property(o => o.OrderDate).IsRequired();
-            entity.Property(o => o.Status)
-                .HasDefaultValue(StatusEnum.Pending)
-                .HasConversion<int>();
-
+            entity.Property(o => o.Status).HasDefaultValue(StatusEnum.Pending).HasConversion<int>();
             entity.Property(o => o.TotalAmount).HasColumnType("decimal(18,2)");
 
-            // Order to Customer (Many-to-One)
             entity.HasOne(o => o.Customer)
                 .WithMany(c => c.Orders)
                 .HasForeignKey(o => o.CustomerId)
@@ -75,14 +71,12 @@ public class BeverageContext(DbContextOptions<BeverageContext> options) : DbCont
             entity.Property(oi => oi.Quantity).IsRequired();
             entity.Property(oi => oi.Price).HasColumnType("decimal(18,2)");
 
-            // OrderItem to Order (Many-to-One)
-            entity.HasOne(oi => oi.Order)
+            entity.HasOne(oi => oi.Order) // OrderItem to Order (Many-to-One)
                 .WithMany(o => o.OrderItems)
                 .HasForeignKey(oi => oi.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);  // Cascade delete order items when order is deleted
 
-            // OrderItem to Beverage (Many-to-One)
-            entity.HasOne(oi => oi.Beverage)
+            entity.HasOne(oi => oi.Beverage) // OrderItem to Beverage (Many-to-One)
                 .WithMany()
                 .HasForeignKey(oi => oi.BeverageId)
                 .OnDelete(DeleteBehavior.Restrict);  // Prevent deletion of beverages in use by orders

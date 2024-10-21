@@ -23,7 +23,6 @@ public class AuthController : ControllerBase
         }
     }
 
-    // Example of a registration endpoint
     [HttpPost("register")]
     public IActionResult Register([FromBody] RegisterDTO RegisterDTO)
     {
@@ -32,10 +31,9 @@ public class AuthController : ControllerBase
         {
             Email = RegisterDTO.Email,
             PasswordHash = hashedPassword,
-            // CustomerId will need to be set based on registration flow
+            //TODO CustomerId will need to be set based on registration flow
         };
 
-        // Save new user to the database
         _authService.RegisterUser(newUser);
 
         return Ok("User registered successfully.");

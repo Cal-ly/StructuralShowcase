@@ -13,10 +13,18 @@ public class AuthService
 
     public void RegisterUser(User newUser)
     {
-        // Add the new user to the context and save
+        newUser.Role = UserRole.Customer;  // Assign customer role
         _context.Users.Add(newUser);
         _context.SaveChanges();
     }
+
+    public void RegisterAdmin(User newUser)
+    {
+        newUser.Role = UserRole.Admin;  // Assign admin role
+        _context.Users.Add(newUser);
+        _context.SaveChanges();
+    }
+
 
     public string HashPassword(string password)
     {
@@ -50,7 +58,8 @@ public class AuthService
             Subject = new ClaimsIdentity(
             [
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Role.ToString())  // Add role to token claims
             ]),
             Expires = DateTime.UtcNow.AddMinutes(double.Parse(_configuration["Jwt:ExpiryMinutes"] ?? "720")),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),

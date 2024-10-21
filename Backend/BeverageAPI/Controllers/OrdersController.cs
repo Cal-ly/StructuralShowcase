@@ -60,7 +60,7 @@ public class OrdersController : ControllerBase
             {
                 BeverageId = oi.BeverageId,
                 Quantity = oi.Quantity,
-                Price = oi.Price * oi.Quantity // Total price for the item
+                Price = oi.Price * oi.Quantity
             }).ToList()
         };
 
@@ -71,7 +71,7 @@ public class OrdersController : ControllerBase
         return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, order);
     }
 
-    // Get all orders (for admin users)
+    // Get all orders
     [HttpGet]
     [Authorize]
     public IActionResult GetOrders()
@@ -80,7 +80,7 @@ public class OrdersController : ControllerBase
         return Ok(orders);
     }
 
-    // Get a specific order by ID (for both customer and admin)
+    // Get a specific order by ID
     [HttpGet("{id}")]
     public IActionResult GetOrder(int id)
     {
@@ -91,7 +91,7 @@ public class OrdersController : ControllerBase
 
     // Update order status (for admin users)
     [HttpPut("{id}/status")]
-    [Authorize]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public IActionResult UpdateOrderStatus(int id, [FromBody] StatusEnum newStatus)
     {
         var order = _context.Orders.Find(id);
