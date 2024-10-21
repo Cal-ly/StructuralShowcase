@@ -1,6 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddUserSecrets<Program>()  // Ensure secrets.json is prioritized for dev environment
+    .AddEnvironmentVariables();
 
 // Retrieve the JWT settings from configuration (secrets.json or appsettings)
 var jwtSettings = builder.Configuration.GetSection("Jwt"); // ?? throw new InvalidOperationException("JWT settings are not configured.");
@@ -77,6 +82,7 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
