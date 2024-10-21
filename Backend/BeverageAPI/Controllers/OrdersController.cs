@@ -71,7 +71,7 @@ public class OrdersController : ControllerBase
 
     // Get all orders (for admin users)
     [HttpGet]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public IActionResult GetOrders()
     {
         var orders = _context.Orders.Include(o => o.OrderItems).ToList();
@@ -89,7 +89,7 @@ public class OrdersController : ControllerBase
 
     // Update order status (for admin users)
     [HttpPut("{id}/status")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public IActionResult UpdateOrderStatus(int id, [FromBody] StatusEnum newStatus)
     {
         var order = _context.Orders.Find(id);

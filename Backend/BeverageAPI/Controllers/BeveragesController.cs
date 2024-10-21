@@ -2,7 +2,7 @@
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]  // Secure all endpoints with JWT
+[AllowAnonymous]
 public class BeveragesController : ControllerBase
 {
     private readonly BeverageContext _context;
@@ -37,7 +37,7 @@ public class BeveragesController : ControllerBase
 
     // POST: /Beverages (Restrict to admin users only)
     [HttpPost]
-    [Authorize(Roles = "Admin")]  // Only admins can add new beverages
+    [Authorize]  // Only admins can add new beverages
     public async Task<ActionResult<BeverageDTO>> PostBeverage(BeverageDTO beverageDto)
     {
         var beverage = _autoMapper.Map<Beverage>(beverageDto);
@@ -49,7 +49,7 @@ public class BeveragesController : ControllerBase
 
     // PUT: /Beverages/5 (Restrict to admin users only)
     [HttpPut("{id}")]
-    [Authorize(Roles = "Admin")]  // Only admins can update beverage details
+    [Authorize]  // Only admins can update beverage details
     public async Task<IActionResult> PutBeverage(int id, BeverageDTO beverageDto)
     {
         var beverage = await _context.Beverages.FindAsync(id);
@@ -82,7 +82,7 @@ public class BeveragesController : ControllerBase
 
     // DELETE: /Beverages/5 (Restrict to admin users only)
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Admin")]  // Only admins can delete beverages
+    [Authorize]  // Only admins can delete beverages
     public async Task<IActionResult> DeleteBeverage(int id)
     {
         var beverage = await _context.Beverages.FindAsync(id);

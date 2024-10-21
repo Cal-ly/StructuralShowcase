@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using BeverageAPI.Services;
-using BeverageAPI.DTO;
-using Microsoft.EntityFrameworkCore;
-
-[ApiController]
+﻿[ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
@@ -37,7 +32,7 @@ public class AuthController : ControllerBase
         {
             Email = RegisterDTO.Email,
             PasswordHash = hashedPassword,
-            // CustomerId will need to be set based on your registration flow
+            // CustomerId will need to be set based on registration flow
         };
 
         // Save new user to the database

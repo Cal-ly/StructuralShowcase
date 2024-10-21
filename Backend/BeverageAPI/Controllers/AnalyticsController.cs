@@ -2,7 +2,7 @@
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Admin")]  // Restrict access to admin users
+[AllowAnonymous]
 public class AnalyticsController : ControllerBase
 {
     private readonly AnalyticsService _analyticsService;

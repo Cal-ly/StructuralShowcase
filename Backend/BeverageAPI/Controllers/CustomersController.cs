@@ -75,7 +75,7 @@ namespace BeverageAPI.Controllers
 
         // For admin users to retrieve all customers
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public IActionResult GetAllCustomers()
         {
             var customers = _context.Customers.Include(c => c.Orders).ToList();
@@ -97,7 +97,7 @@ namespace BeverageAPI.Controllers
 
         // For admin users to get a specific customer by ID
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public IActionResult GetCustomer(int id)
         {
             var customer = _context.Customers.Include(c => c.Orders).FirstOrDefault(c => c.Id == id);
@@ -121,7 +121,7 @@ namespace BeverageAPI.Controllers
 
         // For admin users to add a new customer
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public IActionResult AddCustomer([FromBody] Customer customer)
         {
             _context.Customers.Add(customer);
@@ -131,7 +131,7 @@ namespace BeverageAPI.Controllers
 
         // For admin users to update a specific customer by ID
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public IActionResult UpdateCustomer(int id, [FromBody] Customer customer)
         {
             if (id != customer.Id) return BadRequest();
@@ -142,7 +142,7 @@ namespace BeverageAPI.Controllers
 
         // For admin users to delete a customer by ID
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public IActionResult DeleteCustomer(int id)
         {
             var customer = _context.Customers.Find(id);
