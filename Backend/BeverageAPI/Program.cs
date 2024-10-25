@@ -9,7 +9,7 @@ builder.Configuration
 
 // Retrieve the JWT settings from configuration (secrets.json or appsettings)
 var jwtSettings = builder.Configuration.GetSection("Jwt") ?? throw new InvalidOperationException("JWT settings are not configured.");
-var keyString = jwtSettings["Key"];
+var keyString = jwtSettings["Key"] ?? string.Empty;
 if (string.IsNullOrEmpty(keyString))
 {
     throw new InvalidOperationException("JWT Secret-Key is not configured.");
@@ -17,7 +17,6 @@ if (string.IsNullOrEmpty(keyString))
 var key = Encoding.ASCII.GetBytes(keyString);
 
 // Configure JWT authentication
-//Console.WriteLine($"JWT Key: {jwtSettings["Key"] ?? "JWT Secret-Key is missing!"}");
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
