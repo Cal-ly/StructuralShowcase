@@ -2,7 +2,7 @@
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]  // Only authenticated users can access these endpoints
+//[Authorize]  // Only authenticated users can access these endpoints
 public class CustomersController : ControllerBase
 {
     private readonly BeverageContext _context;
@@ -73,7 +73,7 @@ public class CustomersController : ControllerBase
 
     // For admin users to retrieve all customers
     [HttpGet]
-    [Authorize]
+    //[Authorize]
     public IActionResult GetAllCustomers()
     {
         var customers = _context.Customers.Include(c => c.Orders).ToList();
@@ -95,7 +95,7 @@ public class CustomersController : ControllerBase
 
     // For admin users to get a specific customer by ID
     [HttpGet("{id}")]
-    [Authorize]
+    //[Authorize]
     public IActionResult GetCustomer(int id)
     {
         var customer = _context.Customers.Include(c => c.Orders).FirstOrDefault(c => c.Id == id);
@@ -119,7 +119,7 @@ public class CustomersController : ControllerBase
 
     // For admin users to add a new customer
     [HttpPost]
-    [Authorize]
+    //[Authorize]
     public IActionResult AddCustomer([FromBody] Customer customer)
     {
         _context.Customers.Add(customer);
@@ -129,7 +129,7 @@ public class CustomersController : ControllerBase
 
     // For admin users to update a specific customer by ID
     [HttpPut("{id}")]
-    [Authorize]
+    //[Authorize]
     public IActionResult UpdateCustomer(int id, [FromBody] Customer customer)
     {
         if (id != customer.Id) return BadRequest();
@@ -140,7 +140,7 @@ public class CustomersController : ControllerBase
 
     // For admin users to delete a customer by ID
     [HttpDelete("{id}")]
-    [Authorize]
+    //[Authorize]
     public IActionResult DeleteCustomer(int id)
     {
         var customer = _context.Customers.Find(id);
