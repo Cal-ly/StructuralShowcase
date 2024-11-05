@@ -1,15 +1,14 @@
 I would like you to guide me step-by-step through building a **full-stack B2B brewery ordering system** from scratch.
-The overall project should be called **Brewery**.
+The overall project should be called **Brewery**. I work mainly Visual Studio 2022 for csharp in Developer Powershell 
 I would like to take it one step at a time, to ask questions or add modifications.
-The system should include:
 
-### **1. Database Design (Using MySQL database)**
+### **Step 1. Database Design (Using MySQL database)**
 
 - Set up a local **MySQL** database using **Entity Framework Core** with a **code-first approach**.
 - All models should contain
  - A **string** `Id`, which should come from a generated GUID.
  - A `Validate` method for the relevant properties.
- - `ToString()`, `Equals()` and `GetHashCode()` methods.
+ - The methods `ToString()`, `Equals()` and `GetHashCode()`.
 - Design the following tables and relationships:
   - **Customers**: Store customer information like `Name` and `Email` and `Orders`. Each `Customer` should only have one `User`.
   - **Users**: Handle authentication with fields for `Email` and `PasswordHash`. Each user is linked to a customer through a foreign key `CustomerId`. The `Role` should be an **enum**, to define role. The  Admins pre-register users, and customers log in to complete their own customer profile.
@@ -55,22 +54,27 @@ public enum UserRoleEnum
 // Beverage.cs
 public class Beverage
 {
-    public string Id { get; set; }
-    public string? Name { get; set; }
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public required string? Name { get; set; }
     public string? Description { get; set; }
     public decimal Price { get; set; }
     public SizeEnum Size { get; set; }
 
     public void Validate()
     {
-        // Validation logic for Id, Name, Description, Price, and Size
+        if (string.IsNullOrEmpty(Name)) throw new ArgumentException("Name is required.");
+        if (Price <= 0) throw new ArgumentException("Price must be greater than zero.");
     }
+
+    public override string ToString() => $"{Name} - {Size} - {Price}";
+    public override bool Equals(object obj) => obj is Beverage other && Id == other.Id;
+    public override int GetHashCode() => Id.GetHashCode();
 }
 ```
 
 - Define the relationships between these tables using **Fluent API** in **BreweryContext**.
 
-### **2. Back-End API (ASP.NET Core + Entity Framework Core, Hosted on Azure)**
+### **Step 2. Back-End API (ASP.NET Core + Entity Framework Core, Hosted on Azure)**
 
 - Use **Visual Studio 2022 Enterprise Edition** to develop the API.
 - Create an **ASP.NET Core API** that:
@@ -87,7 +91,6 @@ public class Beverage
 
 
 - Implement **error handling** and **input validation** (e.g., invalid email, order quantity).
-- Deploy the API on **Azure App Service** and link it to the MySQL database hosted on Simply.com.
 - Use the Visual Studio 2022 "Manage User Secrets" to store secrets, so they won't be pushed to GitHub.
 
 #### **Recommended Folder Structure (Back-End API)**:
@@ -129,7 +132,7 @@ BreweryAPI/
 
 ### **3. Front-End (React, Hosted on Simply.com)**
 
-- Build a **React** front-end using **Visual Studio Code** to interact with the back-end API:
+- Build a **React** (check for latest version) front-end using **Visual Studio Code** to interact with the back-end API:
   - **Login Page**: Allows users to log in and receive a JWT token, stored in `localStorage` for future API requests.
   - **Customer Dashboard**: Allows customers to:
     - Browse available beverages.
@@ -141,8 +144,10 @@ BreweryAPI/
     - CRUD customers and users.
     - CRUD beverages.
     - Access analytics data like top customers, total sales, and revenue trends.
-  - Use **Axios** for making API requests, and configure it to include the JWT token in the request headers for authorized requests.
+  - Use **Axios** (check for latest version) for making API requests, and configure it to include the JWT token in the request headers for authorized requests.
+  - Use **Bootstrap** (check for latest version) to help style and design the app.
   
+- Suggest a folder structure to the front-end app.
 - Implement routing between pages using **React Router**.
 - Host the React app on **Simply.com** alongside the MySQL database.
 
@@ -151,26 +156,31 @@ BreweryAPI/
 ```
 src/
 │
-├── components/    # Reusable React components
-│   ├── Customer.js
-│   ├── OrderForm.js
-│   ├── Navbar.js
+├── assets/                  # Static files, images, etc.
 │
-├── pages/         # Full-page components
-│   ├── Home.js
-│   ├── Login.js
-│   ├── Orders.js
-│   └── Analytics.js
+├── components/              # Shared components across pages
+│   ├── Navbar.js            # Top navigation bar
+│   ├── ProtectedRoute.js    # Route protection for JWT (initially unused)
+│   └── LoadingSpinner.js    # Loader for async data fetching
 │
-├── services/      # API calls and JWT management
-│   ├── api.js
-│   └── auth.js
+├── pages/                   # Page components
+│   ├── Login.js             # Login page
+│   ├── CustomerDashboard.js # Customer dashboard
+│   ├── AdminDashboard.js    # Admin dashboard
+│   └── Beverages.js         # View for browsing beverages
 │
-├── context/       # (Optional) React context for global state
-│   └── AuthContext.js
+├── services/                # API call abstractions
+│   ├── api.js               # Axios instance with base URL
+│   ├── authService.js       # Login, logout, token storage
+│   ├── customerService.js   # Customer-related CRUD operations
+│   ├── orderService.js      # Order-related CRUD operations
+│   ├── beverageService.js   # Beverage-related CRUD operations
+│   └── analyticsService.js  # Admin analytics API calls
 │
-├── App.js         # Main component for route configuration
-└── index.js       # Entry point for the React application
+├── App.js                   # Main app component and router setup
+├── index.js                 # App entry point
+├── App.css                  # Global styles
+└── setupProxy.js            # Proxy for local dev to handle CORS with API
 ```
 
 ### **4. Authentication and Authorization**
